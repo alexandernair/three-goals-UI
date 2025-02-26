@@ -4,11 +4,11 @@ import axios from 'axios';
 // Define types for the data you're fetching
 interface Data {
   id: number;
-  name: string;
-  description: string;
+  goals: string[]; // Change this to a string[] instead of a tuple
+  date: string;
 }
 
-const API: React.FC = () => {
+const API = () => {
   // State variables to store data and loading/error states
   const [data, setData] = useState<Data[] | null>(null);  // Data fetched from API
   const [error, setError] = useState<string | null>(null); // Error state
@@ -21,7 +21,7 @@ const API: React.FC = () => {
       .then((response) => {
         setData(response.data);    // Set fetched data to state
         setLoading(false);   
-        console.log(response.data)       // Set loading to false after fetching
+        console.log(response.data); // Set loading to false after fetching
       })
       .catch((error) => {
         setError(error.message);    // Set error if the API call fails
@@ -45,8 +45,15 @@ const API: React.FC = () => {
         <ul>
           {data.map((item) => (
             <li key={item.id}>
-              <h2>{item.name}</h2>
-              <p>{item.description}</p>
+              <h2>
+                {/* Check if item.goals is an array before calling .map */}
+                {Array.isArray(item.goals) ? (
+                  item.goals.map((goal, index) => <p key={index}>{goal}</p>)
+                ) : (
+                  <p>No goals available</p> // Or you can display any other fallback message
+                )}
+              </h2>
+              <p>{item.date}</p>
             </li>
           ))}
         </ul>
