@@ -1,14 +1,15 @@
-import './App.css'
-import API from './services/api.tsx'
-import PatchGoals from './services/patchGoals.tsx'
+import './Styles/App.css'
+import Header from './Components/Header.tsx'
+import 'typeface-open-sans'
+import DateComp from './Components/DateComp.tsx'
 
 function App() {
 
   return (
     <>
       <div>
-        <API/>
-        <PatchGoals/>
+        <Header/>
+        <DateComp/>
       </div>
     </>
   )

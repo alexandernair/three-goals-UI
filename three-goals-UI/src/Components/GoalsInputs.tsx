@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import CheckBox from './Checkbox'
 function PatchGoals() {
   const [goals, setGoals] = useState(["", "", ""]);
 
@@ -18,7 +18,7 @@ function PatchGoals() {
         },
         body: JSON.stringify({ goals: goals }),
       });
-
+      console.log(goals)
       const result = await response.json();
       console.log(result);
     } catch (error) {
@@ -29,7 +29,7 @@ function PatchGoals() {
   return (
     <>
       <div>
-        <h1>Three Goals For The Day:</h1>
+        <h1>Three Goals For Today:</h1>
         <div className="input-fields">
           <input
             name="myInput"
@@ -37,6 +37,7 @@ function PatchGoals() {
             onChange={(e) => handleChange(e, 0)}
             placeholder="Goal 1"
           />
+          <CheckBox></CheckBox>
           <input
             name="myInput"
             value={goals[1]}
