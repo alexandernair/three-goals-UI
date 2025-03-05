@@ -4,7 +4,9 @@ const DateComp = () => {
     const date: Date = new Date()
     let today = date.getDate()
     return(
-        <h1 className = "date">{date.getDate()}/{date.getMonth()}/{date.getFullYear()}</h1>
+        <div className = "flex-container ">
+            <h1 className = "date">{date.getDate()}/{date.getMonth()}/{date.getFullYear()}</h1>
+        </div>
     )
 }
 

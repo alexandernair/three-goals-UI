@@ -1,3 +1,10 @@
 .date{
     text-align: center;
+    text-emphasis-color: red;
 }
+.flex-container {
+    display: flex;
+    background-color: rgb(213, 194, 23);
+    justify-content: center;
+  }
+  
