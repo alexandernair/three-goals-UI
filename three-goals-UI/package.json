@@ -10,10 +10,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tailwindcss/vite": "^4.0.14",
     "axios": "^1.7.9",
     "bootstrap-icons": "^1.11.3",
+    "dayjs": "^1.11.13",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "tailwindcss": "^4.0.14",
     "typeface-open-sans": "^1.1.13"
   },
   "devDependencies": {

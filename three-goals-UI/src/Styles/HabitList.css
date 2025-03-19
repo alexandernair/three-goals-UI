@@ -1,0 +1,9 @@
+.overlay {
+    background-color: blue;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    z-index: 10; /* Ensures this component is above others */
+  }
