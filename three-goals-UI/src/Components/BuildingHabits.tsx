@@ -3,20 +3,20 @@ import dayjs from "dayjs";
 import '../Styles/BuildingHabits.css'
 
 export type Habit = {
-    id: number;
-    name: string;
-  };
-  
-  export type TrackingData = {
-    [key: string]: boolean; // Key: `${habit_id}-${date}`
-  };
-  
-  export type ApiHabitResponse = {
-    id: number;
-    name: string;
-    date: string | null;
-    completed: number | null;
-  };
+  id: number;
+  name: string;
+};
+
+export type TrackingData = {
+  [key: string]: boolean; // Key: `${habit_id}-${date}`
+};
+
+export type ApiHabitResponse = {
+  id: number;
+  name: string;
+  date: string | null;
+  completed: number | null;
+};
 const API_URL = "http://localhost:8000/api/habits.php"; // Update this if needed
 
 const HabitTable: React.FC = () => {
@@ -25,7 +25,7 @@ const HabitTable: React.FC = () => {
   const [tracking, setTracking] = useState<TrackingData>({});
 
   // Get the Monday of the current week
-  const getStartOfWeek = (offset: number = 0): dayjs.Dayjs => 
+  const getStartOfWeek = (offset: number = 0): dayjs.Dayjs =>
     dayjs().startOf("week").add(offset, "week");
 
   // Fetch habits & tracking data
@@ -60,7 +60,7 @@ const HabitTable: React.FC = () => {
   // Get the current week's dates
   const getWeekDates = (): string[] => {
     const startOfWeek = getStartOfWeek(weekOffset);
-    return Array.from({ length: 7 }, (_, i) => 
+    return Array.from({ length: 7 }, (_, i) =>
       startOfWeek.add(i, "day").format("YYYY-MM-DD")
     );
   };
@@ -81,7 +81,29 @@ const HabitTable: React.FC = () => {
       console.error("Error updating habit tracking:", error);
     }
   };
+  //Delete habbit
+  const deleteHabit = async (habitId: number) => {
+    try {
+      await fetch(API_URL, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ habitId }),
+      });
 
+      setHabits(prev => prev.filter(habit => habit.id !== habitId));
+
+      setTracking(prevTracking => {
+        const updatedTracking = { ...prevTracking };
+        Object.keys(updatedTracking).forEach(key => {
+          if (key.startsWith(`${habitId}-`)) delete updatedTracking[key];
+        });
+        return updatedTracking;
+      });
+
+    } catch (error) {
+      console.error("Error deleting habit:", error);
+    }
+  };
   // Add a new habit
   const addHabit = async (): Promise<void> => {
     const name = prompt("Enter new habit:");
@@ -91,7 +113,7 @@ const HabitTable: React.FC = () => {
       const response = await fetch(`${API_URL}?addHabit=true`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name }),
+        body: JSON.stringify({ habit: name }),
       });
 
       const data: { habit_id: number } = await response.json();
@@ -129,7 +151,16 @@ const HabitTable: React.FC = () => {
           <tbody>
             {habits.map(({ id, name }) => (
               <tr key={id} className="text-center">
-                <td className="border p-2 text-left font-semibold">{name}</td>
+                <td className="border p-2 text-left font-semibold flex items-center">
+                  {/* 🗑️ Delete Button */}
+                  <button
+                    onClick={() => deleteHabit(id)}
+                    className="mr-2 p-1 bg-red-500 text-white rounded"
+                  >
+                    ❌
+                  </button>
+                  {name}
+                </td>
                 {getWeekDates().map(date => (
                   <td key={date} className="border p-2">
                     <input
